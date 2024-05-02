@@ -1,85 +1,3 @@
-# import re
-# import spacy
-
-# nlp = spacy.load("en_core_web_sm")
-
-# paragraph1 = """"advertising" includes a radio or television commercial, printed or recorded advertisement or promotion, sales literature and all\nother promotional material generally disseminated, transmitted or made available to the public that furthers or could reasonably be expected to further a trade in a contract; (« publicité »)"""
-# paragraph2 = """"advertising" includes a radio or television commercial, printed or recorded advertisement or promotion, sales literature and all other promotional material generally disseminated, transmitted or made available to the public that furthers or could reasonably be expected to further a trade in a contract;\n"""
-# paragraph1_list = paragraph1.split("\n")
-# paragraph2_list = paragraph2.split("\n")
-# paragraph1_list = [line.split("\n") for line in paragraph1_list]
-# paragraph2_list = [line.split("\n") for line in paragraph2_list]
-
-# current_paragraph = []
-# added_strings = []
-# removed_strings = []
-
-
-# for i, paragraph in enumerate(paragraph2_list):
-#     for j, line in enumerate(paragraph1_list):
-
-#         paragraph1_str = ''.join(line)
-#         paragraph2_str = ''.join(paragraph2_list[i])
-#         paragraph1_str_next = ''.join(paragraph1_list[j+1])
-
-#         if re.findall(paragraph1_str, paragraph2_str):
-#             current_paragraph.append(line)
-#             if re.findall(paragraph1_str_next, paragraph2_str):
-#                 current_paragraph.append(''.join(str(re.findall(paragraph1_str_next, paragraph2_str))))
-#                 j += 2
-#             print(current_paragraph)
-#             with open("outputs.txt", 'w', encoding="utf-8") as f:
-#                 f.write(str(current_paragraph))
-#             current_paragraph = []
-
-
-
-######################################################################################################################
-
-
-
-# import difflib
-
-# def find_matching_lines(paragraph1, paragraph2):
-#     matcher = difflib.SequenceMatcher(None, paragraph1[0], paragraph2)
-    
-#     matching_lines = [paragraph2[match.b:match.b + match.size] for match in matcher.get_matching_blocks() if match.size > 0]
-    
-#     return matching_lines
-
-# def extract_extra_string(paragraph1, paragraph2):
-#     if len(paragraph1) > 1:
-#         matcher = difflib.SequenceMatcher(None, paragraph1[1], paragraph2)
-        
-#         matching_blocks = matcher.get_matching_blocks()
-        
-#         if matching_blocks:
-#             last_matching_block = matching_blocks[-1]
-#             extra_string = paragraph1[1][last_matching_block.b + last_matching_block.size:]
-#             return extra_string.strip()
-#         else:
-#             return paragraph1[1].strip()
-#     else:
-#         return None
-
-# paragraph1 = ['"advertising" includes a radio or television commercial, printed or recorded advertisement or promotion, sales literature and all', 'other promotional material generally disseminated, transmitted or made available to the public that furthers or could reasonably be expected to further a trade in a contract; (« publicité »)']
-# paragraph2 = """"advertising" includes a radio or television commercial, printed or recorded advertisement or promotion, sales literature and all other promotional material generally disseminated, transmitted or made available to the public that furthers or could reasonably be expected to further a trade in a contract;\n"""
-
-# print("Paragraph 1:", paragraph1)
-# print("Paragraph 2:", paragraph2)
-
-# matching_lines = find_matching_lines(paragraph1, paragraph2)
-# print("Matching Lines:", matching_lines)
-
-# extra_string = extract_extra_string(paragraph1, paragraph2)
-# print("Extra String in paragraph1[1]:", extra_string)
-
-
-
-######################################################################################################################
-
-
-
 import difflib
 import re
 import fitz
@@ -214,14 +132,14 @@ removed = re.sub(r'\s*\n+', '\n', removed)
 
 removed = process_parenthesis(removed)
 
-# added, removed = double_compare(added, removed)
+added, removed = double_compare(added, removed)
 
 print()
 print("Added Strings:",added)
 print("\n\nRemoved Strings:", removed)
 
-if not os.path.exists("outputs"):
-    os.makedirs("outputs")
+if not os.path.exists("output"):
+    os.makedirs("output")
 with open('outputs/final_output_text.txt', 'w') as f:
     f.write('[Added Lines/Paragraphs/Words]\n\n')
     f.write(added + '\n\n\n')
